@@ -70,9 +70,9 @@ JoyStickModule:
     - topic_name: cmd_vel
       buttons: [4]
       axis:
-        linear-x: 1
-        linear-y: 0
-        angular-z: 3
+        linear-x: 1     #  将速度降下来
+        linear-y: 0 
+        angular-z: 3 
   rpc_clients:
     - interface_type: std_srvs/srv/Empty
       service_name: reset_world

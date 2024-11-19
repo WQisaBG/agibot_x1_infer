@@ -110,13 +110,13 @@ void JoyStickModule::MainLoop() {
       }
       if (ret) {
         if (twist_pub.axis.find("linear-x") != twist_pub.axis.end()) {
-          vel_msgs.linear.x = joy_data.axis[twist_pub.axis["linear-x"]];
+          vel_msgs.linear.x = 0.1*joy_data.axis[twist_pub.axis["linear-x"]];
         }
         if (twist_pub.axis.find("linear-y") != twist_pub.axis.end()) {
-          vel_msgs.linear.y = joy_data.axis[twist_pub.axis["linear-y"]];
+          vel_msgs.linear.y = 0.1*joy_data.axis[twist_pub.axis["linear-y"]];
         }
         if (twist_pub.axis.find("linear-z") != twist_pub.axis.end()) {
-          vel_msgs.linear.z = joy_data.axis[twist_pub.axis["linear-z"]];
+          vel_msgs.linear.z = 0.1*joy_data.axis[twist_pub.axis["linear-z"]];
         }
         if (twist_pub.axis.find("angular-x") != twist_pub.axis.end()) {
           vel_msgs.angular.x = joy_data.axis[twist_pub.axis["angular-x"]];
@@ -125,9 +125,9 @@ void JoyStickModule::MainLoop() {
           vel_msgs.angular.y = joy_data.axis[twist_pub.axis["angular-y"]];
         }
         if (twist_pub.axis.find("angular-z") != twist_pub.axis.end()) {
-          vel_msgs.angular.z = joy_data.axis[twist_pub.axis["angular-z"]];
+          vel_msgs.angular.z = 0.1*joy_data.axis[twist_pub.axis["angular-z"]];
         }
-        aimrt::channel::Publish<geometry_msgs::msg::Twist>(twist_pub.pub, vel_msgs);
+        aimrt::channel::Publish<geometry_msgs::msg::Twist>(twist_pub.pub, vel_msgs);     // 组织速度信息  并发布
       }
     }
 

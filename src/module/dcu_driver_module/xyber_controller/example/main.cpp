@@ -21,21 +21,23 @@ int main() {
   // first node in EtherCAT bus.
   uint8_t ethercat_id = 1;
   std::string dcu_name = "body";
-  controller->CreateDcu(dcu_name, ethercat_id);
+  controller->CreateDcu(dcu_name, ethercat_id);    //创建DCU
 
   // Create an PowerFlow-R52 type Actuator, name it by the type and attach it on
-  // the "body" DCU. Assuming its can_id is 1, and connected to the dcu channel1
+  // the "body" DCU. Assuming its can_id is 1, and connected to the dcu channel1    创建执行器  并通过channel1 介入到DCU
   uint8_t actuator_can_id = 1;
   std::string actuator_name = "PowerFlowR52";
   controller->AttachActuator(dcu_name, CtrlChannel::CTRL_CH1, ActuatorType::POWER_FLOW_R52,
                              actuator_name, actuator_can_id);
 
-  // Step 3. Start the controller
-
+  // Step 3. Start the controller                              启动控制器
+ 
   // Setup EtherCAT realtime thread, 90 for the priority, bind the cpu core 1
+  //设置EtherCAT实时线程，优先级90，绑定cpu核1
   controller->SetRealtime(90, 1);
 
   // Set the EtherCAT frequency to 1k(1000000ns) and enable DC sync.
+  //将 EtherCAT 频率设置为 1k(1000000ns) 并启用 DC 同步。
   bool ret = controller->Start("enp2s0", 1000000, true);
   if (!ret) {
     std::cout << "Start Failed" << std::endl;
@@ -43,6 +45,7 @@ int main() {
   }
 
   // Step 4. Enable All actuator
+  //步骤 4. 启用所有执行器
   ret = controller->EnableAllActuator();
   if (ret) {
     std::cout << "Enable Actuator Success" << std::endl;
@@ -53,9 +56,9 @@ int main() {
   // enable imu
   controller->ApplyDcuImuOffset(dcu_name);
 
-  // Step 5. Control the actuator
+  // Step 5. Control the actuator   //步骤 5. 控制执行器
   float dt = 0;
-  float pos_begin = controller->GetPosition(actuator_name);
+  float pos_begin = controller->GetPosition(actuator_name);   //获取初始化位姿
   for (size_t i = 0; i < 100 * 30; i++) {
     // read imu
     DcuImu imu = controller->GetDcuImuData(dcu_name);
